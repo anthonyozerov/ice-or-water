@@ -4,7 +4,6 @@ import pandas as pd
 
 # dawson et al
 def get_dawson_labels(df, q=None, thresh=None):
-
     assert q is not None or thresh is not None, "Either q or thresh must be provided"
 
     if q is not None:
@@ -22,7 +21,11 @@ def get_dawson_labels(df, q=None, thresh=None):
         else:
             val = "unlabeled"
         return val
-    labels = pd.cut(df['vel'], [-np.inf, slow_thresh, fast_thresh, np.inf],
-                    labels=['frozen', 'unlabeled', 'thawed'])
+
+    labels = pd.cut(
+        df["vel"],
+        [-np.inf, slow_thresh, fast_thresh, np.inf],
+        labels=["frozen", "unlabeled", "thawed"],
+    )
 
     return labels, [slow_thresh, fast_thresh]

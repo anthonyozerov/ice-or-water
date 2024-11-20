@@ -5,8 +5,9 @@ import os
 import xarray as xr
 import numpy as np
 
+
 def load_ground(xrange, yrange):
-    basins = gpd.read_file("data/basins/ANT_Basins_IMBIE2_v1.6")
+    basins = gpd.read_file("data/continent/basins/ANT_Basins_IMBIE2_v1.6")
     grounding_line = unary_union(basins.geometry)
 
     min_x = xrange[0] - 1e3
@@ -19,6 +20,7 @@ def load_ground(xrange, yrange):
     grounding_line = grounding_line.intersection(bbox)
 
     return grounding_line
+
 
 def load_earthaccess(short_name, version):
     import earthaccess
@@ -46,8 +48,10 @@ def load_earthaccess(short_name, version):
 
 
 def load_icevelocity(xrange, yrange):
-    if os.path.exists("data/antarctica_ice_velocity_450m_v2.nc"):
-        vel = xr.open_dataset("data/antarctica_ice_velocity_450m_v2.nc", chunks="auto")
+    if os.path.exists("data/continent/antarctica_ice_velocity_450m_v2.nc"):
+        vel = xr.open_dataset(
+            "data/continent/antarctica_ice_velocity_450m_v2.nc", chunks="auto"
+        )
     else:
         vel = load_earthaccess(short_name="NSIDC-0484", version="2")
 
@@ -62,9 +66,12 @@ def load_icevelocity(xrange, yrange):
     vel = vel_mag
     return vel
 
+
 def load_bed(xrange, yrange):
-    if os.path.exists("data/BedMachineAntarctica-v3.nc"):
-        bed = xr.open_dataset("data/BedMachineAntarctica-v3.nc", chunks="auto")
+    if os.path.exists("data/continent/BedMachineAntarctica-v3.nc"):
+        bed = xr.open_dataset(
+            "data/continent/BedMachineAntarctica-v3.nc", chunks="auto"
+        )
     else:
         bed = load_earthaccess(short_name="NSIDC-0756", version="3")
 

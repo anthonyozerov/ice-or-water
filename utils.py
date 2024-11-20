@@ -23,9 +23,9 @@ def get_data(x, y, array):
         data.append(mat[int(iy), int(ix)])
     return np.array(data)
 
+
 # get a np array from an xarray using a range of coordinates
 def get_image(xrange, yrange, array):
-
     x_idx_min, x_idx_max = get_idx([min(xrange), max(xrange)], array["x"].data)
     y_idx_min, y_idx_max = get_idx([max(yrange), min(yrange)], array["y"].data)
 
@@ -37,12 +37,13 @@ def get_image(xrange, yrange, array):
 
     return np.array(subset), extent
 
-def get_points_within(df, polygon):
 
-    point_df = gpd.GeoDataFrame(geometry=[Point(x, y) for x, y in zip(df["x"], df["y"])])
+def get_points_within(df, polygon):
+    point_df = gpd.GeoDataFrame(
+        geometry=[Point(x, y) for x, y in zip(df["x"], df["y"])]
+    )
     polygon_df = gpd.GeoDataFrame(geometry=[polygon])
     join_left_df = point_df.sjoin(polygon_df, how="left")
     within = join_left_df["index_right"] == 0
 
     return within
-
